@@ -1,11 +1,11 @@
-package com.nbapark.demo
+package com.nbapark.fwooper
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class DemoApplication
+class FwooperApplication
 
 fun main(args: Array<String>) {
-    runApplication<DemoApplication>(*args)
+    runApplication<FwooperApplication>(*args)
 }

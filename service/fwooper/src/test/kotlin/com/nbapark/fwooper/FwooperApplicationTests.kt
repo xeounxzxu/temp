@@ -1,10 +1,10 @@
-package com.nbapark.demo
+package com.nbapark.fwooper
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DemoApplicationTests {
+class FwooperApplicationTests {
 
     @Test
     fun contextLoads() {
