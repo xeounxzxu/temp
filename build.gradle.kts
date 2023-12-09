@@ -32,11 +32,11 @@ subprojects {
     apply(plugin = "org.asciidoctor.jvm.convert")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudDependenciesVersion")}")
-        }
-    }
+//    dependencyManagement {
+//        imports {
+//            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudDependenciesVersion")}")
+//        }
+//    }
 
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect")

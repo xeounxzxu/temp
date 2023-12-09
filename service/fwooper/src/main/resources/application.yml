@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:13306/default
+    password: 1234
+    username: default
+    driver-class-name: com.mysql.cj.jdbc.Driver
