@@ -12,9 +12,8 @@ interface PostRepository {
 
 @Repository
 class PostRepositoryImpl(
-    private val postJpaRepository: PostJpaRepository
+    private val postJpaRepository: PostJpaRepository,
 ) : PostRepository {
-
     override fun save(command: PostSaveCommand): PostSaveResult {
         postJpaRepository.save(command.toEntity())
         return PostSaveResult("", "", "")

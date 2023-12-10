@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PostService(
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
 ) {
-
     @Transactional
     fun write(command: PostSaveCommand): PostSaveResult {
         return postRepository.save(command)

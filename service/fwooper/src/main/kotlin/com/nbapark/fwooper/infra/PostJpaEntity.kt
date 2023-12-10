@@ -24,7 +24,7 @@ class PostJpaEntity(
     @CreationTimestamp
     val createdDate: LocalDateTime?, // 작성일
     @LastModifiedDate
-    val updatedDate: LocalDateTime? // 수정일
+    val updatedDate: LocalDateTime?, // 수정일
 ) {
     constructor(title: String, content: String) : this(null, title, content, null, null, null)
 }

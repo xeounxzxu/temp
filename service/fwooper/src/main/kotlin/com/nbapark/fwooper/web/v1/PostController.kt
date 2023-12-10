@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("v1")
 class PostController(
-    private val service: PostService
+    private val service: PostService,
 ) {
-
     @PostMapping("post")
-    fun write(@RequestBody request: PostSaveRequest) {
+    fun write(
+        @RequestBody request: PostSaveRequest,
+    ) {
         service.write(request.toCommand())
     }
 }
