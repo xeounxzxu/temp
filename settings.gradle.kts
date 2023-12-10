@@ -1,6 +1,7 @@
 rootProject.name = "nbapark"
 
 include(
+    ":support:app",
     ":service:fwooper"
 )
 
