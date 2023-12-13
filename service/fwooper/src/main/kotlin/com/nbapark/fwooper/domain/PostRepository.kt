@@ -1,21 +1,9 @@
 package com.nbapark.fwooper.domain
 
-import com.nbapark.fwooper.dto.PostSaveCommand
-import com.nbapark.fwooper.dto.PostSaveResult
-import com.nbapark.fwooper.dto.toEntity
-import com.nbapark.fwooper.infra.PostJpaRepository
 import org.springframework.stereotype.Repository
 
+@Repository
 interface PostRepository {
-    fun save(command: PostSaveCommand): PostSaveResult
+    fun save(post: Post): Post
 }
 
-@Repository
-class PostRepositoryImpl(
-    private val postJpaRepository: PostJpaRepository,
-) : PostRepository {
-    override fun save(command: PostSaveCommand): PostSaveResult {
-        postJpaRepository.save(command.toEntity())
-        return PostSaveResult("", "", "")
-    }
-}

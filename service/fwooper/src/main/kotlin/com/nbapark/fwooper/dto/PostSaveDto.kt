@@ -1,6 +1,6 @@
 package com.nbapark.fwooper.dto
 
-import com.nbapark.fwooper.infra.PostJpaEntity
+import com.nbapark.fwooper.infra.PostDataModel
 
 data class PostSaveRequest(
     val title: String,
@@ -16,7 +16,7 @@ data class PostSaveCommand(
     val userId: Long,
 )
 
-fun PostSaveCommand.toEntity(): PostJpaEntity = PostJpaEntity(title, content)
+fun PostSaveCommand.toEntity(): PostDataModel = PostDataModel(title, content)
 
 data class PostSaveResult(
     val title: String,

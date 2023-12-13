@@ -11,7 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 
 @Entity(name = "post")
-class PostJpaEntity(
+class PostDataModel(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?, // id
