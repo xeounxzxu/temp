@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.spring") apply false
     kotlin("plugin.jpa") apply false
     id("org.springframework.boot") apply false
-    id("io.spring.dependency-management")
+    id("io.spring.dependency-management") apply false
     id("org.asciidoctor.jvm.convert") apply false
     id("org.jlleitschuh.gradle.ktlint") apply false
 }

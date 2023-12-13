@@ -2,6 +2,7 @@ rootProject.name = "nbapark"
 
 include(
     ":support:app",
+    ":support:environment-processor",
     ":support:clients:griffin-client",
     ":service:fwooper",
     ":service:griffin"
