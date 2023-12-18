@@ -1,4 +1,4 @@
-package com.nbapark.fwooper.infra
+package com.nbapark.fwooper.infra.jpa
 
 import com.nbapark.fwooper.domain.Post
 import com.nbapark.fwooper.domain.PostRepository

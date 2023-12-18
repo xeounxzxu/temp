@@ -1,4 +1,4 @@
-package com.nbapark.fwooper.infra
+package com.nbapark.fwooper.infra.jpa
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

@@ -1,6 +1,6 @@
 package com.nbapark.fwooper.dto
 
-import com.nbapark.fwooper.infra.PostDataModel
+import com.nbapark.fwooper.infra.jpa.PostDataModel
 
 data class PostSaveRequest(
     val title: String,

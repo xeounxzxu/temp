@@ -1,4 +1,4 @@
-package com.nbapark.fwooper.infra
+package com.nbapark.fwooper.infra.jpa
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
