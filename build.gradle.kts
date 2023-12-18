@@ -46,6 +46,11 @@ subprojects {
         testImplementation("com.ninja-squad:springmockk:${property("springMockkVersion")}")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+
+//        // logger
+//        implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
+//        implementation("org.slf4j:slf4j-api:1.7.30")
     }
 
     tasks.getByName("bootJar") {

@@ -2,9 +2,17 @@ package com.nbapark.fwooper.infra.client
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.reactive.function.client.ClientRequest
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction
+import org.springframework.web.reactive.function.client.ExchangeFunction
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
+import reactor.util.retry.Retry
+import java.time.Duration
+
+// fixme : logger checked ..
+//private val log = KotlinLogging.logger {}
 
 @Configuration
 class GriffinConfiguration {
@@ -13,6 +21,7 @@ class GriffinConfiguration {
     fun baseClient(): WebClient = WebClient
         .builder()
         .baseUrl("http://localhost:9090")
+        .filter(retryFilter())
         .build()
 
     @Bean
@@ -20,4 +29,16 @@ class GriffinConfiguration {
         .builderFor(WebClientAdapter.create(baseClient))
         .build()
         .createClient(GriffinClient::class.java)
+
+    private fun retryFilter() =
+        ExchangeFilterFunction { request, next ->
+            next.exchange(request)
+                .retryWhen(
+                    Retry.fixedDelay(3, Duration.ofSeconds(30))
+                        .doAfterRetry {
+                            println("retry filter")
+                        }
+                )
+        }
+
 }
