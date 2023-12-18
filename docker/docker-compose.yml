@@ -16,20 +16,20 @@ services:
       - ./post/maria:/var/lib/mysqlysql
       # init.sql
       - ./post/sql:/docker-entrypoint-initdb.d
-  # User DB
-  user:
-    image: arm64v8/mysql
-    restart: always
-    ports:
-      - "23306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: default
-      MYSQL_USER: default
-      MYSQL_PASSWORD: 1234
-    container_name: "user_db"
-    volumes:
-      - ./user/maria:/var/lib/mysqlysql
-      # init.sql
-      - ./user/sql:/docker-entrypoint-initdb.d
+#  # User DB
+#  user:
+#    image: arm64v8/mysql
+#    restart: always
+#    ports:
+#      - "23306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: 1234
+#      MYSQL_DATABASE: default
+#      MYSQL_USER: default
+#      MYSQL_PASSWORD: 1234
+#    container_name: "user_db"
+#    volumes:
+#      - ./user/maria:/var/lib/mysqlysql
+#      # init.sql
+#      - ./user/sql:/docker-entrypoint-initdb.d
 

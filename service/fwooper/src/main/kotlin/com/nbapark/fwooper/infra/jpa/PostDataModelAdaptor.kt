@@ -1,8 +1,11 @@
 package com.nbapark.fwooper.infra.jpa
 
-import com.nbapark.fwooper.domain.Post
-import com.nbapark.fwooper.domain.PostRepository
+import com.nbapark.fwooper.domain.post.Post
+import com.nbapark.fwooper.domain.post.PostRepository
+import org.springframework.stereotype.Repository
 
+// fixme : why not use to interface ?
+@Repository
 class PostDataModelAdaptor(
     private val postDataModelRepository: PostDataModelRepository
 ) : PostRepository {

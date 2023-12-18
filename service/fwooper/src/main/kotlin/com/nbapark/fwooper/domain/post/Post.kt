@@ -1,4 +1,4 @@
-package com.nbapark.fwooper.domain
+package com.nbapark.fwooper.domain.post
 
 import java.time.LocalDateTime
 
