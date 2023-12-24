@@ -1,7 +1,9 @@
 package com.nbapark.fwooper.infra.client
 
+import com.nbapark.fwooper.core.exception.ErrorMessage
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
@@ -27,7 +29,12 @@ class GriffinConfiguration {
         .filter(retryFilter())
         .defaultStatusHandler(
             HttpStatusCode::isError
-        ) { res -> Mono.just(RuntimeException("Error Success..")) }
+        ) { res ->
+            res.bodyToFlux(ErrorMessage::class.java)
+                .next()
+                // todo : detail is log and message handler ..
+                .map { RuntimeException(it.message) }
+        }
         .build()
 
     @Bean
@@ -49,3 +56,13 @@ class GriffinConfiguration {
         }
 
 }
+
+
+class WebClient4xxException(message: String?, throwable: Throwable?) : WebClientRuntimeException(message, throwable)
+
+class WebClient5xxException(message: String?, throwable: Throwable?) : WebClientRuntimeException(message, throwable)
+
+sealed class WebClientRuntimeException(
+    message: String?,
+    cause: Throwable?
+) : RuntimeException(message, cause)
