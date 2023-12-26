@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.server.RequestPredicates
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerResponse
+import kotlin.math.truncate
 
 @Order(-2)
 @Component
@@ -36,19 +37,20 @@ class GlobalErrorExceptionHandler(
     }
 
     private val getError2 = HandlerFunction { request ->
-        // TODO : Custom Exception Add
-        when (val throwable = super.getError(request)) {
+        // TODO : Custom Exception Add & Log Add
+        val throwable = super.getError(request)
+        when (throwable) {
             is Exception -> {
                 ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .bodyValue(
-                        ErrorMessage(500, "Exeption!", throwable.message ?: "")
+                        ErrorMessage(500, throwable.message ?: "", throwable.localizedMessage)
                     )
             }
 
             else -> {
                 ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .bodyValue(
-                        ErrorMessage(500, "Exeption!", throwable.message ?: "")
+                        ErrorMessage(500, throwable.message ?: "", throwable.localizedMessage)
                     )
             }
         }
