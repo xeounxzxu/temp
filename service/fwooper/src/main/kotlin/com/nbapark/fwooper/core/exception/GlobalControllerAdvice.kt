@@ -1,5 +1,6 @@
 package com.nbapark.fwooper.core.exception
 
+import com.nbapark.fwooper.infra.client.WebClientRuntimeException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -17,9 +18,20 @@ class GlobalControllerAdvice {
     fun error(e: RuntimeException): ResponseEntity<ErrorMessage> =
         ErrorCode.E001.toResponseEntity(e.message ?: "")
 
-    @ExceptionHandler(IllegalArgumentException::class)
+    @ExceptionHandler(
+        value = [
+            IllegalArgumentException::class
+        ]
+    )
     fun error(e: IllegalArgumentException): ResponseEntity<ErrorMessage> =
         ErrorCode.E002.toResponseEntity(e.message ?: "")
+
+    @ExceptionHandler(
+        value = [
+            WebClientRuntimeException::class
+        ]
+    )
+    fun error(e: WebClientRuntimeException) = e.code.toResponseEntity(e.message ?: "")
 }
 
 enum class ErrorCode(

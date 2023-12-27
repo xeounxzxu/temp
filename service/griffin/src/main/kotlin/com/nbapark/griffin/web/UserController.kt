@@ -12,13 +12,12 @@ class UserController {
     suspend fun getUserInfo(
         @PathVariable userId: Long,
     ): Map<String, Any> =
-        if (100L == userId) {
-            // todo : 100 유저 Mock 예외 처리
-            throw RuntimeException("100 은 예외 유저 입니다.")
-        } else {
-            mapOf(
+        when (userId) {
+            100L -> throw RuntimeException("100은에러")
+            101L -> throw IllegalArgumentException("101은에러")
+            else -> mapOf(
                 "userId" to userId,
-                "nikeName" to "테스트-$userId",
+                "nickName" to "테스트-$userId"
             )
         }
 }

@@ -1,5 +1,6 @@
 package com.nbapark.fwooper.infra.client
 
+import com.nbapark.fwooper.core.exception.ErrorCode
 import com.nbapark.fwooper.core.exception.ErrorMessage
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,46 +24,49 @@ import java.util.function.Function
 class GriffinConfiguration {
 
     @Bean
-    fun baseClient(): WebClient = WebClient
-        .builder()
-        .baseUrl("http://localhost:9090")
-        .filter(retryFilter())
-        .defaultStatusHandler(
-            HttpStatusCode::isError
-        ) { res ->
-            res.bodyToFlux(ErrorMessage::class.java)
-                .next()
-                // todo : detail is log and message handler ..
-                .map { RuntimeException(it.message) }
-        }
-        .build()
+    fun baseClient(): WebClient =
+        WebClient.builder()
+            .baseUrl("http://localhost:9090")
+            .filter(retryFilter())
+            .defaultStatusHandler(
+                HttpStatusCode::isError
+            ) { res ->
+                res.bodyToFlux(ErrorMessage::class.java)
+                    .next()
+                    .handle { it, sink ->
+                        when {
+                            res.statusCode().is4xxClientError -> sink.error(WebClient4xxException(it.message))
+                            else -> sink.error(WebClient5xxException(it.message))
+                        }
+                    }
+            }.build()
 
     @Bean
-    fun griffinClient(baseClient: WebClient): GriffinClient = HttpServiceProxyFactory
-        .builderFor(WebClientAdapter.create(baseClient))
-        .build()
-        .createClient(GriffinClient::class.java)
+    fun griffinClient(baseClient: WebClient): GriffinClient =
+        HttpServiceProxyFactory.builderFor(WebClientAdapter.create(baseClient)).build()
+            .createClient(GriffinClient::class.java)
 
 
-    private fun retryFilter() =
-        ExchangeFilterFunction { request, next ->
-            next.exchange(request)
-                .retryWhen(
-                    Retry.fixedDelay(3, Duration.ofSeconds(30))
-                        .doAfterRetry {
-                            println("retry filter")
-                        }
-                )
-        }
+    private fun retryFilter() = ExchangeFilterFunction { request, next ->
+        next.exchange(request).retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(30)).doAfterRetry {
+            println("retry filter")
+        })
+    }
 
 }
 
 
-class WebClient4xxException(message: String?, throwable: Throwable?) : WebClientRuntimeException(message, throwable)
+class WebClient4xxException(message: String?, throwable: Throwable? = null) :
+    WebClientRuntimeException(ErrorCode.E001, message, throwable)
 
-class WebClient5xxException(message: String?, throwable: Throwable?) : WebClientRuntimeException(message, throwable)
+class WebClient5xxException(message: String?, throwable: Throwable? = null) :
+    WebClientRuntimeException(ErrorCode.E002, message, throwable)
 
 sealed class WebClientRuntimeException(
+    errorCode: ErrorCode,
     message: String?,
-    cause: Throwable?
-) : RuntimeException(message, cause)
+    cause: Throwable?,
+) : RuntimeException(message, cause) {
+
+    val code = errorCode
+}
