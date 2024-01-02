@@ -48,9 +48,11 @@ subprojects {
         kapt("org.springframework.boot:spring-boot-configuration-processor")
 
 
-//        // logger
-//        implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
-//        implementation("org.slf4j:slf4j-api:1.7.30")
+        // logger
+        // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging-jvm
+        implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation("org.slf4j:slf4j-api:2.0.10")
     }
 
     tasks.getByName("bootJar") {

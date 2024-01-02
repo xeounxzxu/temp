@@ -1,10 +1,13 @@
 package com.nbapark.fwooper.core.exception
 
 import com.nbapark.fwooper.infra.client.WebClientRuntimeException
+import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+
+private val logger = KotlinLogging.logger { }
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
@@ -17,6 +20,9 @@ class GlobalControllerAdvice {
     )
     fun error(e: RuntimeException): ResponseEntity<ErrorMessage> =
         ErrorCode.E001.toResponseEntity(e.message ?: "")
+            .apply {
+                logger.error { e }
+            }
 
     @ExceptionHandler(
         value = [
@@ -25,6 +31,9 @@ class GlobalControllerAdvice {
     )
     fun error(e: IllegalArgumentException): ResponseEntity<ErrorMessage> =
         ErrorCode.E002.toResponseEntity(e.message ?: "")
+            .apply {
+                logger.error { e }
+            }
 
     @ExceptionHandler(
         value = [
@@ -32,6 +41,9 @@ class GlobalControllerAdvice {
         ]
     )
     fun error(e: WebClientRuntimeException) = e.code.toResponseEntity(e.message ?: "")
+        .apply {
+            logger.error { e }
+        }
 }
 
 enum class ErrorCode(
