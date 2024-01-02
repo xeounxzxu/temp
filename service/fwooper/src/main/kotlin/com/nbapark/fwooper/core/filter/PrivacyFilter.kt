@@ -1,10 +1,14 @@
 package com.nbapark.fwooper.core.filter
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.nbapark.fwooper.core.exception.ErrorCode
+import com.nbapark.fwooper.core.exception.ErrorMessage
+import com.nbapark.fwooper.core.utils.MDCUtils
 import com.nbapark.fwooper.infra.client.GriffinClient
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.http.HttpStatus
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
@@ -12,7 +16,8 @@ import java.io.IOException
 
 @Component
 class PrivacyFilter(
-//    private val griffinClient: GriffinClient
+    private val griffinClient: GriffinClient,
+    private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -23,25 +28,36 @@ class PrivacyFilter(
         try {
 
             // todo : logging add & change ... exception
-            // todo : checked to user ...
-//            val userId = request.getHeader(USER_ID) ?: throw RuntimeException("bad gateway")
+            val userId = request.getHeader(USER_ID) ?: throw RuntimeException("bad gateway")
+
+            val userInfo = griffinClient.getUser(userId.toLong())
+
+            MDCUtils.setUserId(userInfo.userId)
+            MDCUtils.setUserNickName(userInfo.nickName)
 
             filterChain.doFilter(request, response)
 
         } catch (e: RuntimeException) {
-            // todo : logging add & change ... exception
-            // e.printStackTrace()
-            setErrorResponse(HttpStatus.BAD_GATEWAY, response, e)
+            logger.error(e)
+            setErrorResponse(ErrorCode.E003, response, e)
         }
     }
 
-    fun setErrorResponse(status: HttpStatus, response: HttpServletResponse, ex: Throwable?) {
-        response.status = status.value()
+    fun setErrorResponse(code: ErrorCode, response: HttpServletResponse, ex: Throwable?) {
+        response.status = code.status
         response.contentType = "application/json"
         try {
-            response.writer.write("{\"error\" : \"badgateway\"}")
+            val message = objectMapper.writeValueAsString(
+                ErrorMessage(
+                    code.status,
+                    code.code,
+                    code.message,
+                    ex!!.message.toString()
+                )
+            )
+            response.writer.write(message)
         } catch (e: IOException) {
-            e.printStackTrace()
+            logger.error(e)
         }
     }
 

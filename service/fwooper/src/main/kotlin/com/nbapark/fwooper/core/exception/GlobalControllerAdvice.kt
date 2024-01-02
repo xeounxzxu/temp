@@ -53,7 +53,8 @@ enum class ErrorCode(
 ) {
 
     E001(HttpStatus.INTERNAL_SERVER_ERROR.value(), "E001", "알수없는에러"),
-    E002(HttpStatus.BAD_REQUEST.value(), "E002", "요청에러")
+    E002(HttpStatus.BAD_REQUEST.value(), "E002", "요청에러"),
+    E003(HttpStatus.BAD_GATEWAY.value(), "E003", "요청된에러가아닙니다.")
 }
 
 fun ErrorCode.toResponseEntity(detail: String): ResponseEntity<ErrorMessage> =

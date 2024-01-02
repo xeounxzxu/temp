@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+fun isAppleSilicon() = System.getProperty("os.name") == "Mac OS X" && System.getProperty("os.arch") == "aarch64"
+
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -53,6 +55,11 @@ subprojects {
         implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
         // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
         implementation("org.slf4j:slf4j-api:2.0.10")
+
+
+        if (isAppleSilicon()) {
+            runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.94.Final:osx-aarch_64")
+        }
     }
 
     tasks.getByName("bootJar") {

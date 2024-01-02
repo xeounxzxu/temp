@@ -5,15 +5,14 @@ import com.nbapark.fwooper.infra.jpa.PostDataModel
 data class PostSaveRequest(
     val title: String,
     val content: String,
-    val userId: Long,
+//    val userId: Long,
 )
 
-fun PostSaveRequest.toCommand(): PostSaveCommand = PostSaveCommand(this.title, this.content, this.userId)
+fun PostSaveRequest.toCommand(): PostSaveCommand = PostSaveCommand(this.title, this.content)
 
 data class PostSaveCommand(
     val title: String,
-    val content: String,
-    val userId: Long,
+    val content: String
 )
 
 fun PostSaveCommand.toEntity(): PostDataModel = PostDataModel(title, content)

@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PostService(
-    private val postRepository: PostRepository,
-    private val userValidation: UserValidation
+    private val postRepository: PostRepository
+//    private val userValidation: UserValidation
 ) {
     @Transactional
     fun write(command: PostSaveCommand): Post {
 
-        userValidation.valid(command.userId)
+//        userValidation.valid(command.userId)
 
         val post = Post(command.title, command.content)
         return post.write(repository = postRepository)
