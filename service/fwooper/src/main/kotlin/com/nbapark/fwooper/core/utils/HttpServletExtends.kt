@@ -1,8 +1,8 @@
 package com.nbapark.fwooper.core.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nbapark.fwooper.core.exception.ErrorCode
-import com.nbapark.fwooper.core.exception.ErrorMessage
+import com.nbapark.exception.dto.ErrorMessage
+import com.nbapark.exception.global.ErrorCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 

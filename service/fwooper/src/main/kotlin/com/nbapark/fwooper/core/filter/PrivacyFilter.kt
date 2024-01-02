@@ -1,7 +1,7 @@
 package com.nbapark.fwooper.core.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nbapark.fwooper.core.exception.ErrorCode
+import com.nbapark.exception.global.ErrorCode
 import com.nbapark.fwooper.core.utils.MDCUtils
 import com.nbapark.fwooper.core.utils.getUserId
 import com.nbapark.fwooper.core.utils.setErrorMessage

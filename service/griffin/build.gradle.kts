@@ -8,8 +8,9 @@ tasks.getByName("jar") {
 
 dependencies {
 
-    implementation(project(":support:clients:griffin-client"))
-    implementation(project(":support:environment-processor"))
+//    implementation(project(":support:clients:griffin-client"))
+//    implementation(project(":support:environment-processor"))
+    implementation(project(":support:exception"))
 
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")

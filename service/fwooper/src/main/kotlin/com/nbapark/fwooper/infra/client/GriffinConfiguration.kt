@@ -1,7 +1,7 @@
 package com.nbapark.fwooper.infra.client
 
-import com.nbapark.fwooper.core.exception.ErrorCode
-import com.nbapark.fwooper.core.exception.ErrorMessage
+import com.nbapark.exception.dto.ErrorMessage
+import com.nbapark.exception.global.ErrorCode
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

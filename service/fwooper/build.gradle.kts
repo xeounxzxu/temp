@@ -10,6 +10,7 @@ dependencies {
 
 //    implementation(project(":support:clients:griffin-client"))
 //    implementation(project(":support:environment-processor"))
+    implementation(project(":support:exception"))
 
     // TODO : 다른모듈을참조할수없나?!
     implementation("org.springframework.boot:spring-boot-starter-webflux")
