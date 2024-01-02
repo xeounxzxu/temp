@@ -6,12 +6,14 @@ import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatusCode
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
+import reactor.util.retry.Retry
+import java.time.Duration
 
-// fixme : logger checked ..
-private val log = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger { }
 
 @Configuration
 class GriffinConfiguration {
@@ -20,7 +22,7 @@ class GriffinConfiguration {
     fun baseClient(): WebClient =
         WebClient.builder()
             .baseUrl("http://localhost:9090")
-//            .filter(retryFilter())
+            .filter(retryFilter())
             .defaultStatusHandler(
                 HttpStatusCode::isError
             ) { res ->
@@ -36,15 +38,19 @@ class GriffinConfiguration {
 
     @Bean
     fun griffinClient(baseClient: WebClient): GriffinClient =
-        HttpServiceProxyFactory.builderFor(WebClientAdapter.create(baseClient)).build()
+        HttpServiceProxyFactory
+            .builderFor(WebClientAdapter.create(baseClient)).build()
             .createClient(GriffinClient::class.java)
 
 
-//    private fun retryFilter() = ExchangeFilterFunction { request, next ->
-//        next.exchange(request).retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(30)).doAfterRetry {
-//            println("retry filter")
-//        })
-//    }
+    private fun retryFilter() = ExchangeFilterFunction { request, next ->
+        next.exchange(request)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(30)).doAfterRetry {
+                logger.debug {
+                    "catch retry"
+                }
+            })
+    }
 
 }
 

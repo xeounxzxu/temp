@@ -15,4 +15,6 @@ object MDCUtils {
     fun setUserId(userId: Long) = MDC.put(USER_ID, userId.toString())
 
     fun setUserNickName(userNikeName: String) = MDC.put(USER_NIKENAME, userNikeName)
+
+    fun clear() = MDC.clear()
 }
